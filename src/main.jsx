@@ -1,5 +1,5 @@
 import React,{useState} from 'react';import{createRoot}from'react-dom/client';import{LineChart,Line,XAxis,YAxis,Tooltip,ResponsiveContainer,BarChart,Bar,Cell}from'recharts';import{Truck,CloudRain,MapPin,ShieldAlert,Sparkles}from'lucide-react';import'./styles.css';
-const API=import.meta.env.VITE_API_URL||'http://localhost:8000';
+const API=import.meta.env.VITE_API_URL||'http://127.0.0.1:8000';
 const Select=({label,children,...p})=><label>{label}<select {...p}>{children}</select></label>;
 function App(){const [form,setForm]=useState({origin:'Mumbai',destination:'Pune',weight_kg:800,vehicle_type:'Pickup',product_category:'FMCG',sla:'Standard',customer_loyalty:'Regular'}),[data,setData]=useState(),[loading,setLoading]=useState(false),[err,setErr]=useState('');const upd=e=>setForm({...form,[e.target.name]:e.target.value});
  const submit=async e=>{e.preventDefault();setLoading(true);setErr('');try{let r=await fetch(API+'/quote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...form,weight_kg:+form.weight_kg})});if(!r.ok)throw Error('Quote service returned '+r.status);setData(await r.json())}catch(e){setErr(e.message)}finally{setLoading(false)}};

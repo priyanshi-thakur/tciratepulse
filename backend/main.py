@@ -11,7 +11,12 @@ from .rules import alerts
 from .train import train
 
 app=FastAPI(title='TCI-RatePulse API',version='1.0.0')
-app.add_middleware(CORSMiddleware,allow_origins=['http://localhost:5173'],allow_methods=['*'],allow_headers=['*'])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['http://localhost:5173', 'http://127.0.0.1:5173'],
+    allow_methods=['*'],
+    allow_headers=['*'],
+)
 model=None; explainer=None; metrics={}
 # Create local cache schema at import time too, so in-process consumers are safe;
 # startup still loads the model before serving requests.
