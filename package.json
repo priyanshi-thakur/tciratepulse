@@ -1,0 +1,1 @@
+{"scripts":{"dev":"node ./node_modules/vite/bin/vite.js","build":"node ./node_modules/vite/bin/vite.js build"},"dependencies":{"@vitejs/plugin-react":"latest","vite":"latest","react":"latest","react-dom":"latest","recharts":"latest","lucide-react":"latest"},"devDependencies":{}}
