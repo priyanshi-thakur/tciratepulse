@@ -1,7 +1,14 @@
 {
-  "mae_inr": 721.74,
-  "rmse_inr": 1055.92,
-  "r2": 0.9865,
+  "mae_inr": 905.68,
+  "rmse_inr": 1298.44,
+  "r2": 0.983,
   "split": "chronological 80/20 (2023\u20132025)",
-  "dataset": "Reproducible synthetic Indian PTL benchmark; not proprietary TCI data"
+  "dataset": "Reproducible synthetic Indian PTL benchmark; not proprietary TCI data",
+  "model_version": "sih-16factor-2026.1",
+  "feature_count": 21,
+  "old_model_metrics": {
+    "mae_inr": 721.74,
+    "rmse_inr": 1055.92,
+    "r2": 0.9865
+  }
 }

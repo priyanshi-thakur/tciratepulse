@@ -1,5 +1,6 @@
 import hashlib, math, httpx
 from datetime import date
+from fastapi import HTTPException
 from .db import get_cache, set_cache
 
 CITY = {"mumbai":(19.076,72.877),"pune":(18.520,73.856),"delhi":(28.614,77.209),"bengaluru":(12.972,77.594),"bangalore":(12.972,77.594),"chennai":(13.083,80.271),"hyderabad":(17.385,78.487),"kolkata":(22.572,88.364),"ahmedabad":(23.023,72.572),"surat":(21.170,72.831),"jaipur":(26.912,75.787),"nagpur":(21.146,79.089)}
@@ -14,7 +15,7 @@ def coords(place):
         if data:
             val=(float(data[0]["lat"]),float(data[0]["lon"]));set_cache(k,val,604800);return val,"nominatim"
     except Exception: pass
-    return (20.594,78.963), "fallback-india"
+    raise HTTPException(status_code=422, detail=f"Could not resolve Indian location: {place}. Please enter a city or a more specific place.")
 def route(origin,destination):
     a,sa=coords(origin);b,sb=coords(destination); k=key("route",a,b); cached=get_cache(k)
     if cached:return cached
@@ -34,5 +35,5 @@ def weather(lat,lon):
         d=httpx.get("https://api.open-meteo.com/v1/forecast",params={"latitude":lat,"longitude":lon,"current":"temperature_2m,precipitation,wind_speed_10m,weather_code"},timeout=5).json()["current"]
         risk="High" if d["precipitation"]>4 or d["wind_speed_10m"]>45 else "Moderate" if d["precipitation"]>0.5 or d["wind_speed_10m"]>25 else "Low"
         val={"temperature_c":d["temperature_2m"],"precipitation_mm":d["precipitation"],"wind_kph":d["wind_speed_10m"],"risk":risk,"source":"Open-Meteo"}
-    except Exception: val={"temperature_c":29,"precipitation_mm":0,"wind_kph":10,"risk":"Low","source":"fallback"}
+    except Exception: val={"temperature_c":None,"precipitation_mm":None,"wind_kph":None,"risk":"Low","source":"fallback-estimated","note":"Live Open-Meteo was unavailable; neutral weather-risk fallback applied."}
     set_cache(k,val,3600);return val
